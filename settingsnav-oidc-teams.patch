@@ -1,0 +1,22 @@
+--- a/src/app/(main)/settings/SettingsNav.tsx
++++ b/src/app/(main)/settings/SettingsNav.tsx
+@@ -1,5 +1,5 @@
+ import { SideMenu } from '@/components/common/SideMenu';
+ import { useMessages, useNavigation } from '@/components/hooks';
+-import { Settings2, UserCircle, Users } from '@/components/icons';
++import { Settings2, UserCircle, Users, LinkIcon } from '@/components/icons';
+ 
+ export function SettingsNav({ onItemClick }: { onItemClick?: () => void }) {
+@@ -30,6 +30,12 @@
+           path: renderUrl('/settings/teams'),
+           icon: <Users />,
+         },
++        {
++          id: 'oidc-teams',
++          label: 'OIDC Teams',
++          path: renderUrl('/settings/oidc-teams'),
++          icon: <LinkIcon />,
++        },
+       ],
+     },
+   ];

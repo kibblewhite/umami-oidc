@@ -1,0 +1,87 @@
+###############################################################################
+# docker-compose.yml  —  Umami + OIDC development / testing stack
+#
+# Usage:
+#   docker compose -p umami-stack up -d          # start everything
+#   docker compose -p umami-stack exec umami /app/tests/smoke-test.sh  # tests
+#   docker compose -p umami-stack logs -f umami   # watch logs
+#   docker compose -p umami-stack down -v          # tear down + remove volumes
+#
+# To test with a real OIDC provider, uncomment and fill in the OIDC env vars.
+###############################################################################
+
+name: umami-stack
+
+services:
+  umami:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:umami@db:5432/umami
+      APP_SECRET: 179f476d178e1d5e816154efca11d07a5f39c6bdd3188d2aa9d9f3f755bb953a
+      DEBUG: umami:*
+      LOG_QUERY: 1
+
+      # ── Redis (required for session-backed auth tokens) ────────────
+      REDIS_URL: redis://redis:6379
+
+      # ── Public URL (required when behind a reverse proxy) ────────────
+      APP_URL: http://localhost:3000
+
+      # ── OIDC Configuration ────────────────────────────────────────────
+      # Uncomment and fill these in to enable OIDC:
+      OIDC_ENABLED: "true"
+      OIDC_CLIENT_ID: chWLxFvrJJVBSLydTtITl6pwb5ag5YFdN1qPBlbC
+      OIDC_CLIENT_SECRET: KfZMCE88l9qe5nVUj0xpbpNMqaOxTnq7EszV12qqU7541yoHrNqo2ybfoy8JEp4eT8f0yMHkxNZO2BjB0Y17WYDhqu8Trjf0hzGSwHTnNVCFOuem63vTXTkNSFc8UMGl
+      OIDC_ISSUER_URL: https://identity.byteloch.com/application/o/provider-for-umami/
+      OIDC_REDIRECT_URI: http://localhost:3000/api/auth/oidc/callback
+      OIDC_ROLE_CLAIM: groups
+      OIDC_ADMIN_GROUP: umami-admin
+      OIDC_AUTO_CREATE: "true"
+      OIDC_DISPLAY_NAME: "Single Sign-On"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    init: true
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3000/api/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: umami
+    volumes:
+      - umami-db-data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U umami -d umami"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - umami-redis-data:/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  umami-db-data:
+  umami-redis-data:
