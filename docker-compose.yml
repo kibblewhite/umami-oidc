@@ -34,9 +34,9 @@ services:
       # ── OIDC Configuration ────────────────────────────────────────────
       # Uncomment and fill these in to enable OIDC:
       OIDC_ENABLED: "true"
-      OIDC_CLIENT_ID: chWLxFvrJJVBSLydTtITl6pwb5ag5YFdN1qPBlbC
-      OIDC_CLIENT_SECRET: KfZMCE88l9qe5nVUj0xpbpNMqaOxTnq7EszV12qqU7541yoHrNqo2ybfoy8JEp4eT8f0yMHkxNZO2BjB0Y17WYDhqu8Trjf0hzGSwHTnNVCFOuem63vTXTkNSFc8UMGl
-      OIDC_ISSUER_URL: https://identity.byteloch.com/application/o/provider-for-umami/
+      OIDC_CLIENT_ID: redacted
+      OIDC_CLIENT_SECRET: redacted
+      OIDC_ISSUER_URL: https://identity.redacted.com/application/o/provider-for-umami/
       OIDC_REDIRECT_URI: http://localhost:3000/api/auth/oidc/callback
       OIDC_ROLE_CLAIM: groups
       OIDC_ADMIN_GROUP: umami-admin
