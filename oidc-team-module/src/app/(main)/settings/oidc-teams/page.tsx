@@ -13,7 +13,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Button, Column, Heading, Icon, Label, ListItem, Row, Select, Text } from '@umami/react-zen';
+import { Button, Column, Heading, Icon, Label, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
 import { Plus, Trash2, X } from '@/components/icons';
@@ -63,19 +63,6 @@ function authHeaders(): Record<string, string> {
 // ---------------------------------------------------------------------------
 // Minimal inline styles (only for elements without react-zen equivalents)
 // ---------------------------------------------------------------------------
-
-const inputStyle: React.CSSProperties = {
-  padding: '8px 12px',
-  height: 36,
-  border: '1px solid var(--base300)',
-  borderRadius: 4,
-  fontSize: 14,
-  width: '100%',
-  backgroundColor: 'var(--base50)',
-  color: 'var(--base900)',
-  outline: 'none',
-  boxSizing: 'border-box' as const,
-};
 
 const tagStyle: React.CSSProperties = {
   display: 'inline-block',
@@ -170,22 +157,18 @@ function AddRuleForm({
     <Row gap="3" alignItems="flex-end" paddingY="3" style={{ flexWrap: 'wrap' }}>
       <Column gap="1" style={{ flex: '1 1 140px', minWidth: 140 }}>
         <Label>Claim field</Label>
-        <input
-          style={inputStyle}
+        <TextField
           placeholder="e.g. groups"
           value={form.claimField}
-          onChange={e => onFieldChange({ claimField: e.target.value })}
-          onKeyDown={e => e.key === 'Enter' && canAdd && onAdd()}
+          onChange={val => onFieldChange({ claimField: val as string })}
         />
       </Column>
       <Column gap="1" style={{ flex: '1 1 140px', minWidth: 140 }}>
         <Label>Claim value</Label>
-        <input
-          style={inputStyle}
+        <TextField
           placeholder="e.g. analytics-team"
           value={form.claimValue}
-          onChange={e => onFieldChange({ claimValue: e.target.value })}
-          onKeyDown={e => e.key === 'Enter' && canAdd && onAdd()}
+          onChange={val => onFieldChange({ claimValue: val as string })}
         />
       </Column>
       <Column gap="1" style={{ minWidth: 110 }}>
