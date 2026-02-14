@@ -21,7 +21,7 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: postgresql://umami:umami@db:5432/umami
-      APP_SECRET: 179f476d178e1d5e816154efca11d07a5f39c6bdd3188d2aa9d9f3f755bb953a
+      APP_SECRET: redacted
       DEBUG: umami:*
       LOG_QUERY: 1
 
