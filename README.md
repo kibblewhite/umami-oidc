@@ -2,6 +2,8 @@
 
 Build a ready-to-run Umami Analytics Docker image with OIDC single sign-on baked in.
 
+[https://github.com/umami-software/umami/issues/3163](https://github.com/umami-software/umami/issues/3163)
+
 ## What's in the box
 
 ```
